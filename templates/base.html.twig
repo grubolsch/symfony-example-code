@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <link href="css/style.css" type="text/css" rel="stylesheet" />
+        {% endblock %}
+    </head>
+    <body>
+
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <p style="color: green;">{{ flashMessage }}</p>
+        {% endfor %}
+
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+
+        {% block footer %}
+            <footer>&copy; BeCode</footer>
+        {% endblock %}
+    </body>
+</html>
