@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Service\PriceCalculator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,14 +12,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("/", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils, PriceCalculator $priceCalculator): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        die($priceCalculator->log());
-
-
-
-
-
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }

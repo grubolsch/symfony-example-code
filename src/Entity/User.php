@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -40,6 +42,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $petname = '';
+
+    /**
+     * @ORM\OneToMany(targetEntity=Example::class, mappedBy="user")
+     */
+    private $examples;
+
+    public function __construct()
+    {
+        $this->examples = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -129,5 +141,41 @@ class User implements UserInterface
         $this->petname = $petname;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Example[]
+     */
+    public function getExamples(): Collection
+    {
+        return $this->examples;
+    }
+
+    public function addExample(Example $example): self
+    {
+        if (!$this->examples->contains($example)) {
+            $this->examples[] = $example;
+            $example->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExample(Example $example): self
+    {
+        if ($this->examples->contains($example)) {
+            $this->examples->removeElement($example);
+            // set the owning side to null (unless already changed)
+            if ($example->getUser() === $this) {
+                $example->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getEmail() . '/' . $this->getUsername();
     }
 }
